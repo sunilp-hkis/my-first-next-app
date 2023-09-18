@@ -2,6 +2,7 @@
 
 import { getUsers } from "@/api/user";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface User {
@@ -11,7 +12,11 @@ interface User {
 }
 
 const Dashboard = () => {
+  const router = useRouter();
   const [data, setData] = useState<User[]>();
+
+  const LS = typeof window !== "undefined" && localStorage.getItem("kreynick");
+  if (LS === null) router.push("/login");
 
   const user = async () => {
     const response = await getUsers("/admin/users");

@@ -7,8 +7,14 @@ import { useFormik } from "formik";
 import { object, string } from "yup";
 import { LoginPayload, Toast } from "@/utils/types";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
+  const router = useRouter();
+
+  const LS = typeof window !== "undefined" && localStorage.getItem("kreynick");
+  if (LS) router.push("/dashboard");
+
   const [toast, setToast] = useState<Toast | null>({
     message: "",
     toast: false,
@@ -27,6 +33,11 @@ const Login = () => {
       };
       const response = await login("/auth/login", payload);
       setToast({ message: response.message, toast: response.success });
+
+      if (response.success) {
+        localStorage.setItem("kreynick", JSON.stringify(response?.data?.token));
+        router.push("/dashboard");
+      }
     },
   });
 
