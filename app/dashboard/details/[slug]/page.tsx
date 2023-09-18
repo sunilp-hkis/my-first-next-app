@@ -14,7 +14,7 @@ const Detail = ({ params }: Params) => {
 
   useEffect(() => {
     userDetails();
-  }, []);
+  });
 
   return (
     <>
