@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 const Login = () => {
   const router = useRouter();
 
-  const LS = typeof window !== "undefined" && localStorage.getItem("kreynick");
+  const LS = typeof window !== "undefined" && localStorage.getItem("kreynic");
   if (LS) router.push("/dashboard");
 
   const [toast, setToast] = useState<Toast | null>({
@@ -35,7 +35,7 @@ const Login = () => {
       setToast({ message: response.message, toast: response.success });
 
       if (response.success) {
-        localStorage.setItem("kreynick", JSON.stringify(response?.data?.token));
+        localStorage.setItem("kreynic", JSON.stringify(response?.data?.token));
         router.push("/dashboard");
       }
     },

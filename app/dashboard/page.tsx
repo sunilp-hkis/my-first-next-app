@@ -15,7 +15,7 @@ const Dashboard = () => {
   const router = useRouter();
   const [data, setData] = useState<User[]>();
 
-  const LS = typeof window !== "undefined" && localStorage.getItem("kreynick");
+  const LS = typeof window !== "undefined" && localStorage.getItem("kreynic");
   if (LS === null) router.push("/login");
 
   const user = async () => {
