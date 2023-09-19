@@ -1,4 +1,29 @@
-const UserEdit = () => {
+"use client";
+
+import { putUser } from "@/api/user";
+import { Params } from "@/utils/types";
+import { useFormik } from "formik";
+import { object, string } from "yup";
+
+const UserEdit = ({ params }: Params) => {
+  console.log(params.slug);
+  const handleUpdate = async (values: { name: any; email: any }) => {
+    const payload = {
+      name: values.name,
+      email: values.email,
+    };
+    return await putUser(`/admin/user/edit/${params.slug}`, payload);
+  };
+
+  const formik = useFormik({
+    initialValues: { name: "", email: "" },
+    validationSchema: object({
+      name: string().required("Name is required"),
+      email: string().email().required("Email is required"),
+    }),
+    onSubmit: (values) => handleUpdate(values),
+  });
+
   return (
     <>
       <section className="bg-gray-50 dark:bg-gray-900">
@@ -9,7 +34,10 @@ const UserEdit = () => {
                 User update
               </h1>
 
-              <form className="space-y-4 md:space-y-6">
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={formik.handleSubmit}
+              >
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Name
@@ -20,7 +48,11 @@ const UserEdit = () => {
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Name"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
+                  {formik.errors.name && <p>{formik.errors.name}</p>}
                 </div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -32,9 +64,13 @@ const UserEdit = () => {
                     id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@domain.com"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
+                  {formik.errors.email && <p>{formik.errors.email}</p>}
                 </div>
-                <div>
+                {/* <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Password
                   </label>
@@ -45,7 +81,7 @@ const UserEdit = () => {
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />
-                </div>
+                </div> */}
 
                 <button
                   type="submit"

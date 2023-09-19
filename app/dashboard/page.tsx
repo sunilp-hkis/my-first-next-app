@@ -1,6 +1,6 @@
 "use client";
 
-import { getUsers } from "@/api/user";
+import { getUsers, onDelete } from "@/api/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -56,7 +56,7 @@ const Dashboard = () => {
                 return (
                   <>
                     <tr
-                      key={user.userId}
+                      key={user?.userId}
                       className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                     >
                       <th
@@ -70,23 +70,25 @@ const Dashboard = () => {
                       <td className="px-6 py-4">{user?.email}</td>
                       <td className="px-6 py-4 text-right">
                         <Link
-                          href={`/dashboard/details/${user.userId}`}
+                          href={`/dashboard/details/${user?.userId}`}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                         >
                           View
                         </Link>
                         <Link
-                          href="#"
+                          href={`/dashboard/edit/${user?.userId}`}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-5"
                         >
                           Edit
                         </Link>
-                        <Link
-                          href="#"
+                        <span
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                          onClick={() =>
+                            onDelete(`/admin/user/delete/${user?.userId}`)
+                          }
                         >
                           Delete
-                        </Link>
+                        </span>
                       </td>
                     </tr>
                   </>
